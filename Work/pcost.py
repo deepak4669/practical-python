@@ -9,11 +9,14 @@ def portfolio_cost(file_name):
         rows = csv.reader(file)
         headers = next(rows)
 
-        for line in rows:
+        for rowno, line in enumerate(rows, start=1):
+            record = dict(zip(headers, line))
             try:
-                total_cost += int(line[1])*float(line[2])
+                nShares = int(record['shares'])
+                price = float(record['price'])
+                total_cost+= nShares*price
             except ValueError:
-                print('Parsing Gone Bad', line)
+                print(f'Row {rowno}: Bad row: {line}')
 
     return total_cost
 
