@@ -4,12 +4,14 @@
 
 import csv
 
-def parse_csv(rows, select_cols = None, types=None, has_headers=True, silence_errors=True):
+def parse_csv(file, select_cols = None, types=None, has_headers=True, silence_errors=True, delimiter=','):
     '''
     Parse a CSV file into list of records
     '''
     if select_cols and not has_headers:
         raise RuntimeError(f'Select argument requires headers')
+
+    rows = csv.reader(file, delimiter=delimiter)
 
     try:
         if has_headers:
