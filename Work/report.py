@@ -5,11 +5,15 @@
 import csv
 from fileparse import parse_csv
 import sys
+import stock
+import tableformat
 
 def read_portfolio(filename):
     with open(filename) as file:
-        rows = csv.reader(file)
-        portfolio = parse_csv(rows, select_cols=['name', 'shares', 'price'], types=[str, int, float])
+        portdicts = parse_csv(file, select_cols=['name', 'shares', 'price'], types=[str, int, float])
+
+    portfolio = [stock.Stock(s['name'], s['shares'], s['price']) for s in portdicts]
+
     return portfolio
 
 def read_prices(filename)->dict:
@@ -17,39 +21,43 @@ def read_prices(filename)->dict:
     Read prices from CSV file for stock name and price data
     '''
     with open(filename) as file:
-        rows = csv.reader(file)
-        prices = dict(parse_csv(rows, types=[str, float], has_headers=False))
+        prices = dict(parse_csv(file, types=[str, float], has_headers=False))
     return prices
 
 def make_report(portfolio, prices):
     report = []
 
     for holding in portfolio:
-        name = holding['name']
-        shares = holding['shares']
+        name = holding.name
+        shares = holding.shares
         price = prices[name]
-        change = price - holding['price']
+        change = price - holding.price
         report.append((name, shares, price, change))
 
     return report
 
-def print_report(report):
+def print_report(report, formatter):
     headers = ['Name', 'Shares', 'Price', 'Change']
-    print(f'{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}')
-
-    print(f'{'':_>10} {'':_>10} {'':_>10} {'':_>10}')
+    formatter.headings(headers)
 
     for name, share, price, diff in report:
-        print(f'{name:>10s} {share:>10d} {price:>10.2f} {diff:>10.2f}')
+        rowdata = [name, str(share), f'{price:0.2f}', f'{diff:0.2f}']
+        formatter.row(rowdata)
 
-def portfolio_report(portfolio_file, prices_file):
+def portfolio_report(portfolio_file, prices_file, fmt = 'txt'):
     portfolio = read_portfolio(portfolio_file)
     prices = read_prices(prices_file)
     report = make_report(portfolio, prices)
-    print_report(report)
+
+    formatter = tableformat.create_formatter(fmt)
+
+    print_report(report, formatter)
 
 def main(argv):
-    portfolio_report(argv[1], argv[2])
+    if len(argv)==4:
+        portfolio_report(argv[1], argv[2], argv[3])
+    else:
+        portfolio_report(argv[1], argv[2])
 
 if __name__ == '__main__':
     argv = sys.argv
