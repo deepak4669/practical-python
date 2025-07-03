@@ -4,6 +4,7 @@
 
 import csv
 from fileparse import parse_csv
+from portfolio import Portfolio
 import sys
 import stock
 import tableformat
@@ -14,7 +15,7 @@ def read_portfolio(filename):
 
     portfolio = [stock.Stock(s['name'], s['shares'], s['price']) for s in portdicts]
 
-    return portfolio
+    return Portfolio(portfolio)
 
 def read_prices(filename)->dict:
     '''
