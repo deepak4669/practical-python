@@ -4,7 +4,7 @@
 
 import csv
 
-def parse_csv(file, select_cols = None, types=None, has_headers=True, silence_errors=True, delimiter=','):
+def parse_csv(file, select_cols = None, types=None, has_headers=True, silence_errors=False, delimiter=','):
     '''
     Parse a CSV file into list of records
     '''

@@ -9,13 +9,11 @@ import sys
 import stock
 import tableformat
 
-def read_portfolio(filename):
+def read_portfolio(filename, **opts):
     with open(filename) as file:
-        portdicts = parse_csv(file, select_cols=['name', 'shares', 'price'], types=[str, int, float])
+        port = Portfolio.from_csv(file)
 
-    portfolio = [stock.Stock(s['name'], s['shares'], s['price']) for s in portdicts]
-
-    return Portfolio(portfolio)
+    return port
 
 def read_prices(filename)->dict:
     '''
