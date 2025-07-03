@@ -1,7 +1,7 @@
 # pcost.py
 import sys
 import csv
-from report import read_portfolio
+from .report import read_portfolio
 
 def portfolio_cost(file_name):
     total_cost = 0.0

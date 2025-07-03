@@ -1,7 +1,7 @@
-from follow import follow
-import report
+from .follow import follow
+from . import report
 import csv
-import tableformat
+from . import tableformat
 
 def ticker(portfile, logfile, fmt='txt'):
     portfolio = report.read_portfolio(portfile)

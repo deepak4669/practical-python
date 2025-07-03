@@ -3,11 +3,11 @@
 # Exercise 2.4
 
 import csv
-from fileparse import parse_csv
-from portfolio import Portfolio
+from .fileparse import parse_csv
+from .portfolio import Portfolio
 import sys
-import stock
-import tableformat
+from . import stock
+from . import tableformat
 import logging
 
 logging.basicConfig(
