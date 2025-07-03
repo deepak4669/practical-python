@@ -8,6 +8,13 @@ from portfolio import Portfolio
 import sys
 import stock
 import tableformat
+import logging
+
+logging.basicConfig(
+        filename = 'app.log',
+        filemode = 'w',
+        level = logging.DEBUG,
+        )
 
 def read_portfolio(filename, **opts):
     with open(filename) as file:
